@@ -1,0 +1,119 @@
+\documentclass[10pt]{article}
+\usepackage{amsmath} % For equation*
+\usepackage{url}     % For the web sites in the bibliography
+\usepackage{verbatim}% For listing head of abyss
+\usepackage[pdftex]{graphicx,color} % For including pdfs
+
+\title{An Examination of Zipf's Law:\\ or\\ Using Gnu Make to Build a
+  Document}
+\author{A Learner}
+
+\begin{document}
+
+\maketitle
+
+\section{Using Make}
+\label{sec:make}
+
+The point of this document is that one can build a PDF version of it
+by issuing \emph{make} from a command line in the directory
+\emph{make-novice/code/10-latex-example} which contains these
+source files reported by \emph{git ls-files}
+%
+\input{file_list.tex}
+%
+The files are derived from and rely on the \emph{Software
+  Carpentry}\cite{software-carpentry} lesson \emph{make-novice}.
+Section~\ref{sec:zipf} is an imitation research manuscript that
+reports on a study of word frequency using the files.  The following
+sequence of commands will fetch and build the document:
+\begin{verbatim}
+$ git clone -b latex https://github.com/fraserphysics/make-novice.git
+$ cd make-novice/code/10-latex-example
+$ make
+\end{verbatim}
+
+\subsection{The Makefile}
+\label{sec:makefile}
+
+The last three lines of the Makefile, namely
+\begin{verbatim}
+.PHONY : help
+help : Makefile
+        @sed -n 's/^##//p' $<
+\end{verbatim}
+enable one to get a list of selected targets and explanations by
+typing ``make help'' on a command line.  The \emph{help} target rule
+uses the stream editor utility \emph{sed} to extract lines from the
+Makefile that start with ``\#\#''.  Similarly the \emph{\%.head} rule
+uses the utility \emph{awk} to print the first two fields of each
+line.
+
+\section{Zipf's Law}
+\label{sec:zipf}
+
+Zipf's Law\cite{Zipf} concerns the frequency with which different
+words occur in a language.  Here we test the law by sorting words in
+texts based on the number of times that they occur.  Code from the
+Software Carpentry lesson makes tables in which the first column,
+\emph{w}, is a word and the second column, \emph{c}, is a count of the
+number of times the word occurs.  The table is sorted so that \emph{c}
+is monotonically decreasing.  Zipf observed that
+\begin{equation*}
+  \frac{c[n]}{c[m]} \approx \frac{m}{n}.
+\end{equation*}
+
+We use the following books in the study:
+\begin{description}
+\item[abyss] The People of the Abyss by Jack
+  London\cite{London}
+\item[isles] A Journey to the Western Islands of Scotland by Samuel
+  Johnson\cite{Johnson}
+\item[last] Scott's Last Expedition Volume I by Robert Falcon
+  Scott\cite{Scott}
+\item[sierra] My First Summer in the Sierra by John Muir\cite{Muir}
+\end{description}
+
+Here are the first ten values of \emph{w} and \emph{c} for the book
+\emph{abyss}
+%
+\verbatiminput{abyss.head}
+%
+A plot of that data appears in Figure~\ref{fig:abyss}.
+
+Counts of the two most frequent words in each book appear in
+Table~\ref{tab:results}, and plots of the ten most frequent words for
+the books \emph{isles, last} and \emph{sierra} appear in
+Figures~\ref{fig:isles}-\ref{fig:sierra}.
+\begin{table}[b]
+  \centering
+  \begin{tabular}{c|rrr}
+    \input{results.tex}
+  \end{tabular}
+  \caption{Counts of the two most frequent words in each book.  Zipf's
+    law predicts that the ratio will be about 2.0}
+  \label{tab:results}
+\end{table}
+\newcommand{\countfig}[1]{
+\begin{figure}[t]
+  \centering
+    \resizebox{0.9\columnwidth}{!}{\includegraphics{#1.pdf}}
+    \caption{Counts of the ten most frequent words in the book \emph{#1}.}
+    \label{fig:#1}
+\end{figure}
+}
+
+\countfig{abyss}
+\countfig{isles}
+\countfig{last}
+\countfig{sierra}
+
+\bibliographystyle{unsrturl}
+\bibliography{local}
+\end{document}
+
+%%%---------------
+%%% Local Variables:
+%%% eval: (TeX-PDF-mode)
+%%% eval: (setq ispell-personal-dictionary "./localdict")
+%%% End:
