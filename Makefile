@@ -14,6 +14,10 @@ dats : $(DAT_FILES)
 %.dat : books/%.txt $(COUNT_SRC)
 	$(COUNT_EXE) $< $@
 
+books/dorian_gray.txt:
+	wget -O - https://www.gutenberg.org/ebooks/174.txt.utf-8 \
+|tail +37|head -n -370 >$@
+
 .PHONY : clean
 clean :
 	rm -f $(DAT_FILES)
