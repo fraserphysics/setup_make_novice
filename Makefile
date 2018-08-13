@@ -3,6 +3,7 @@ SHELL=/bin/bash
 TXT_FILES=$(addprefix books/, abyss.txt isles.txt last.txt sierra.txt)
 DAT_FILES=$(patsubst books/%.txt, %.dat, $(TXT_FILES))
 PLOT_FILES=$(patsubst books/%.txt, %.pdf, $(TXT_FILES))
+RESULTS=$(PLOT_FILES) results.tex file_list.tex abyss.head
 
 ## all           : The default target is report.pdf
 .PHONY : all
@@ -31,10 +32,12 @@ file_list.tex:
 	head $< |awk '{print $$1, $$2}' > $@
 
 ## report.pdf    : Build the pdf document
-report.pdf: report.bbl
+report.pdf: local.bib report.tex $(RESULTS)
+	pdflatex report
+	bibtex report
 	pdflatex report
 	pdflatex report
-report.aux: report.tex $(PLOT_FILES) results.tex file_list.tex abyss.head
+report.aux: report.tex $(RESULTS)
 	pdflatex report
 
 ## report.bbl    : Build the bibliography for the report
