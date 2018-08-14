@@ -1,6 +1,4 @@
-\documentclass[10pt]{article}
-\usepackage{amsmath} % For equation*
-\usepackage{url}     % For the web sites in the bibliography
+\documentclass[]{article}
 \usepackage{verbatim}% For listing head of abyss
 \usepackage[pdftex]{graphicx,color} % For including pdfs
 
@@ -59,9 +57,9 @@ Software Carpentry lesson makes tables in which the first column,
 \emph{w}, is a word and the second column, \emph{c}, is a count of the
 number of times the word occurs.  The table is sorted so that \emph{c}
 is monotonically decreasing.  Zipf observed that
-\begin{equation*}
+\begin{equation}
   \frac{c[n]}{c[m]} \approx \frac{m}{n}.
-\end{equation*}
+\end{equation}
 
 We use the following books in the study:
 \begin{description}
@@ -109,7 +107,6 @@ Figures~\ref{fig:isles}-\ref{fig:sierra}.
 \countfig{sierra}
 
 \bibliographystyle{unsrt}
-% Nicer if you have the style file \bibliographystyle{unsrturl}
 \bibliography{local}
 \end{document}
 
