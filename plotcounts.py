@@ -3,7 +3,8 @@
 """
 
 import sys
-from collections import Sequence
+import collections
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,6 +21,7 @@ def plot_word_counts(counts, limit=10):
     count_data = [count for (_, count, _) in limited_counts]
     position = np.arange(len(word_data))
     width = 1.0
+# This needs Display
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.set_xticks(position)
@@ -37,7 +39,7 @@ def typeset_labels(labels=None, gap=5):
     is right-padded by spaces so that every label has the same width, then
     is further right padded by ' ' * gap.
     """
-    if not isinstance(labels, Sequence):
+    if not isinstance(labels, collections.Sequence):
         labels = list(range(labels))
     labels = [str(i) for i in labels]
     label_lens = [len(s) for s in labels]
@@ -62,9 +64,8 @@ def get_ascii_bars(values, truncate=True, maxlen=10, symbol='#'):
     else:
         minimum = 0
 
-    # Type conversion to floats is required for compatibility with python 2,
-    # because it doesn't do integer division correctly (it does floor divison
-    # for integers).
+    # Type conversion to floats is required for compatibility with
+    # python 2, because it does floor divison for integers.
     value_range = float(maximum - minimum)
     prop_values = [(float(value - minimum) / value_range) for value in values]
 
@@ -96,7 +97,6 @@ def main(argv=None):
     '''Parses command line and calls functions to make specified plot
 
     '''
-    import argparse
 
     if argv is None:                    # Usual case
         argv = sys.argv[1:]

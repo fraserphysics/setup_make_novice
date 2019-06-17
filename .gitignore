@@ -1,0 +1,9 @@
+*.dat
+*.pdf
+abyss.head
+file_list.tex
+*.aux
+results.tex
+*.bbl
+*.blg
+*.log
