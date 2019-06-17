@@ -129,11 +129,12 @@ def main(argv=None):
     fig = plot_word_counts(counts, args.limit)
 
     # Display if specfied
-    if args.show:
+    if args.show or args.output_file == 'show':
         plt.show()
+        return 0
 
     # Write pdf file if specified
-    if args.output_file and args.output_file.find('.pdf') > 0:
+    if args.output_file:
         fig.savefig(args.output_file)
 
     return 0
