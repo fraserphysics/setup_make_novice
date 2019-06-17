@@ -18,8 +18,7 @@ for the next episode.  Here are the branches:
 08-self-doc
 09-latex
 ~~~
-{: .output}
 
 Maintainer:
 
-* [Andy Fraser]
+* Andy Fraser
