@@ -1,8 +1,12 @@
 #!/usr/bin/env python
+"""countwords.py Code that counts how often each word occours in a
+file for the Software Carpentry lesson make-novice
 
+"""
 import sys
 
 DELIMITERS = ". , ; : ? $ @ ^ < > # % ` ! * - = ( ) [ ] { } / \" '".split()
+
 
 def _open(*args, **kwargs):
     '''Replacement for open that works for utf-8 characters when called
@@ -12,6 +16,8 @@ def _open(*args, **kwargs):
     if sys.version_info[0] == 3:
         kwargs['encoding'] = 'utf-8'
     return open(*args, **kwargs)
+
+
 def load_text(filename):
     """
     Load lines from a plain-text file and return these as a list, with
@@ -129,10 +135,28 @@ def word_count(input_file, output_file, min_length=1):
     percentage_counts = calculate_percentages(sorted_counts)
     save_word_counts(output_file, percentage_counts)
 
-if __name__ == '__main__':
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    min_length = 1
-    if len(sys.argv) > 3:
-        min_length = int(sys.argv[3])
-    word_count(input_file, output_file, min_length)
+def main(argv=None):
+    '''Parses command line and calls function to count words in a file
+
+    '''
+    import argparse
+
+    if argv is None:                    # Usual case
+        argv = sys.argv[1:]
+
+    # Parse command line
+    parser = argparse.ArgumentParser(
+        description='Count words in a file')
+    parser.add_argument('input_file')
+    parser.add_argument('output_file')
+    parser.add_argument('--min_length', type=int, default=1,
+                        help='Drop counts less than "min_length"')
+    args = parser.parse_args(argv)
+
+    # This call does all of the work
+    word_count(args.input_file, args.output_file, args.min_length)
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
