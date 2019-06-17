@@ -1,9 +1,12 @@
 #!/usr/bin/env python
+""" plotcounts.py code to plot word counts for the make_novice lesson
+"""
 
+import sys
+import collections
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
-from collections import Sequence
 
 from countwords import load_word_counts
 
@@ -18,17 +21,16 @@ def plot_word_counts(counts, limit=10):
     count_data = [count for (_, count, _) in limited_counts]
     position = np.arange(len(word_data))
     width = 1.0
-    ax = plt.axes()
+# This needs Display
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
     ax.set_xticks(position)
     ax.set_xticklabels(word_data)
     plt.bar(position, count_data, width, color='b')
     plt.title("Word Counts")
     ax.set_ylabel("Counts")
     ax.set_xlabel("Word")
-    try:
-       plt.margins(x=0)
-    except ValueError:
-       return
+    return fig
 
 
 def typeset_labels(labels=None, gap=5):
@@ -37,7 +39,7 @@ def typeset_labels(labels=None, gap=5):
     is right-padded by spaces so that every label has the same width, then
     is further right padded by ' ' * gap.
     """
-    if not isinstance(labels, Sequence):
+    if not isinstance(labels, collections.Sequence):
         labels = list(range(labels))
     labels = [str(i) for i in labels]
     label_lens = [len(s) for s in labels]
@@ -61,18 +63,17 @@ def get_ascii_bars(values, truncate=True, maxlen=10, symbol='#'):
         minimum = min(values) - 1
     else:
         minimum = 0
-    
-    # Type conversion to floats is required for compatibility with python 2,
-    # because it doesn't do integer division correctly (it does floor divison
-    # for integers).
-    value_range=float(maximum - minimum)
+
+    # Type conversion to floats is required for compatibility with
+    # python 2, because it does floor divison for integers.
+    value_range = float(maximum - minimum)
     prop_values = [(float(value - minimum) / value_range) for value in values]
-    
+
     # Type conversion to int required for compatibility with python 2
     biggest_bar = symbol * int(round(maxlen / len(symbol)))
     bars = [biggest_bar[:int(round(prop * len(biggest_bar)))]
             for prop in prop_values]
-    
+
     return bars
 
 
@@ -93,30 +94,50 @@ def plot_ascii_bars(values, labels=None, screenwidth=80, gap=2, truncate=True):
 
 
 def main(argv=None):
-    '''For looking at map action and moments of images.
+    '''Parses command line and calls functions to make specified plot
 
     '''
-    import argparse
+
     if argv is None:                    # Usual case
         argv = sys.argv[1:]
 
-    input_file = argv[0]
-    output_file = argv[1]
-    limit = 10
-    if len(argv) > 2:
-        limit = int(argv[2])
-    counts = load_word_counts(input_file)
-    plot_word_counts(counts, limit)
-    if output_file == "show":
-        plt.show()
-    elif output_file == 'ascii':
+    # Parse command line
+    parser = argparse.ArgumentParser(
+        description='Make plots for documents or to view')
+    parser.add_argument('--limit', type=int, default=10,
+                        help='Limit plot the "limit" most frequent words')
+    parser.add_argument('--show', action='store_true',
+                        help='Display result on screen')
+    parser.add_argument('input_file')
+    parser.add_argument(
+        'output_file', nargs='?',
+        help='if "ascii" make a termina plot.  Otherwise specify "name.pdf"')
+    args = parser.parse_args(argv)
+
+    # count words in specified book
+    counts = load_word_counts(args.input_file)
+
+    # Print ascii plot to terminal if specified
+    if args.output_file == 'ascii':
         words, counts, _ = list(zip(*counts))
-        for line in plot_ascii_bars(counts[:limit], words[:limit],
+        for line in plot_ascii_bars(counts[:args.limit], words[:args.limit],
                                     truncate=False):
             print(line)
-    else:
-        plt.savefig(output_file)
+        return 0
+
+    # Create matplotlib fig object
+    fig = plot_word_counts(counts, args.limit)
+
+    # Display if specfied
+    if args.show or args.output_file == 'show':
+        plt.show()
+        return 0
+
+    # Write pdf file if specified
+    if args.output_file:
+        fig.savefig(args.output_file)
+
+    return 0
 
 if __name__ == "__main__":
     sys.exit(main())
-    
