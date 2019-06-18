@@ -1,6 +1,6 @@
 include config.mk
 
-TXT_FILES=$(wildcard books/*.txt)
+TXT_FILES=$(wildcard books/*.txt) books/gray.txt
 DAT_FILES=$(patsubst books/%.txt, %.dat, $(TXT_FILES))
 
 # Generate summary table.
@@ -14,7 +14,7 @@ dats : $(DAT_FILES)
 %.dat : books/%.txt $(COUNT_SRC)
 	$(COUNT_EXE) $< $@
 
-books/dorian_gray.txt:
+books/gray.txt:
 	wget -O - https://www.gutenberg.org/ebooks/174.txt.utf-8 \
 |tail +37|head -n -370 >$@
 
@@ -22,6 +22,7 @@ books/dorian_gray.txt:
 clean :
 	rm -f $(DAT_FILES)
 	rm -f results.txt
+	rm -f books/gray.txt
 
 .PHONY : variables
 variables:
