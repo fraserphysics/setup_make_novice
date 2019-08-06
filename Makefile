@@ -47,7 +47,7 @@ report.bbl: local.bib report.aux
 ## clean         : Remove the auto-generated files.
 .PHONY : clean
 clean :
-	rm -f *.head *.pdf *.dat results.txt
+	rm -f *.head *.pdf *.dat *.pyc results.txt
 	rm -rf __pycache__
 	rm -f report.aux report.blg report.bbl report.log file_list.tex results.tex
 
