@@ -13,23 +13,22 @@
 \section{Using Make}
 \label{sec:make}
 
-The point of this document is that one can build a PDF version of it
-by issuing \emph{make} from a command line in the directory
-\emph{make-novice/code/10-latex-example} which contains these
-source files reported by \emph{git ls-files}
+The point of this document is that one can fetch the source and build
+a PDF version of it by issuing the following sequence of commands:
+\begin{verbatim}
+$ git clone -b 09-latex https://github.com/fraserphysics/setup_make_novice.git
+$ cd setup_make-novice
+$ make
+\end{verbatim}
+
+The directory has these source files reported by \emph{git ls-files}
 %
 \input{file_list.tex}
 %
 The files are derived from and rely on the \emph{Software
   Carpentry}\cite{software-carpentry} lesson \emph{make-novice}.
 Section~\ref{sec:zipf} is an imitation research manuscript that
-reports on a study of word frequency using the files.  The following
-sequence of commands will fetch the source and build the document:
-\begin{verbatim}
-$ git clone -b 09-latex https://github.com/fraserphysics/setup_make_novice.git
-$ cd setup_make-novice
-$ make
-\end{verbatim}
+reports on a study of word frequency using the files.
 
 \subsection{The Makefile}
 \label{sec:makefile}
