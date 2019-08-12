@@ -29,7 +29,7 @@ file_list.tex:
 
 # Print the first two fields of the first ten lines of %dat
 %.head : %.dat
-	head $< |awk '{print $$1, $$2}' > $@
+	head -n 10 $< |awk '{print $$1, $$2}' > $@
 
 ## report.pdf    : Build the pdf document
 report.pdf: local.bib report.tex $(RESULTS)

@@ -24,7 +24,7 @@ The files are derived from and rely on the \emph{Software
   Carpentry}\cite{software-carpentry} lesson \emph{make-novice}.
 Section~\ref{sec:zipf} is an imitation research manuscript that
 reports on a study of word frequency using the files.  The following
-sequence of commands will fetch and build the document:
+sequence of commands will fetch the source and build the document:
 \begin{verbatim}
 $ git clone -b 09-latex https://github.com/fraserphysics/setup_make_novice.git
 $ cd setup_make-novice
@@ -83,7 +83,7 @@ Counts of the two most frequent words in each book appear in
 Table~\ref{tab:results}, and plots of the ten most frequent words for
 the books \emph{isles, last} and \emph{sierra} appear in
 Figures~\ref{fig:isles}-\ref{fig:sierra}.
-\begin{table}[b]
+\begin{table}[h]
   \centering
   \begin{tabular}{c|rrr}
     \input{results.tex}
@@ -93,7 +93,7 @@ Figures~\ref{fig:isles}-\ref{fig:sierra}.
   \label{tab:results}
 \end{table}
 \newcommand{\countfig}[1]{
-\begin{figure}[t]
+\begin{figure}[p]
   \centering
     \resizebox{0.9\columnwidth}{!}{\includegraphics{#1.pdf}}
     \caption{Counts of the ten most frequent words in the book \emph{#1}.}
